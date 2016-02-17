@@ -33,7 +33,7 @@ class Router
     @routes = []
   end
 
-  # simply adds a new route to the list of routes
+  # adds a new route to the list of routes
   def add_route(pattern, method, controller_class, action_name)
     @routes << Route.new(pattern, method, controller_class, action_name)
   end
@@ -52,7 +52,7 @@ class Router
     end
   end
 
-  # should return the route that matches this request
+  # return the route that matches this request
   def match(req)
     @routes.find { |route| route.matches?(req) }
   end
