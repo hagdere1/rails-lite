@@ -54,6 +54,8 @@ class Router
     matching_route = match(req)
     if matching_route.nil?
       res.status = 404
+      res.write "Route not found"
+      res.finish
     else
       matching_route.run(req, res)
     end

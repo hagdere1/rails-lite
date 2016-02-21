@@ -1,16 +1,20 @@
 require 'rack'
 require_relative '../lib/controller_base'
 
-class MyController < ControllerBase
+class TestController < ControllerBase
   def go
-    render :show
+    if @req.path == "/template"
+      render :test
+    else
+      redirect_to("/template")
+    end
   end
 end
 
 app = Proc.new do |env|
   req = Rack::Request.new(env)
   res = Rack::Response.new
-  MyController.new(req, res).go
+  TestController.new(req, res).go
   res.finish
 end
 

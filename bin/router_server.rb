@@ -3,37 +3,38 @@ require_relative '../lib/controller_base'
 require_relative '../lib/router'
 
 
-$cats = [
-  { id: 1, name: "Curie" },
-  { id: 2, name: "Markov" }
+$users = [
+  { id: 1, name: "Example User 1" },
+  { id: 2, name: "Example User 2" }
 ]
 
-$statuses = [
-  { id: 1, cat_id: 1, text: "Curie loves string!" },
-  { id: 2, cat_id: 2, text: "Markov is mighty!" },
-  { id: 3, cat_id: 1, text: "Curie is cool!" }
+$posts = [
+  { id: 1, user_id: 1, text: "Example User 1's first post" },
+  { id: 2, user_id: 1, text: "Example User 1's second post" },
+  { id: 3, user_id: 2, text: "Example User 2's first post" },
+  { id: 4, user_id: 2, text: "Example User 2's second post" }
 ]
 
-class StatusesController < ControllerBase
+class PostsController < ControllerBase
   def index
-    statuses = $statuses.select do |s|
-      s[:cat_id] == Integer(params['cat_id'])
+    posts = $posts.select do |post|
+      post[:user_id] == Integer(params['user_id'])
     end
 
-    render_content(statuses.to_json, "application/json")
+    render_content(posts.to_json, "application/json")
   end
 end
 
-class Cats2Controller < ControllerBase
+class UsersController < ControllerBase
   def index
-    render_content($cats.to_json, "application/json")
+    render_content($users.to_json, "application/json")
   end
 end
 
 router = Router.new
 router.draw do
-  get Regexp.new("^/cats$"), Cats2Controller, :index
-  get Regexp.new("^/cats/(?<cat_id>\\d+)/statuses$"), StatusesController, :index
+  get Regexp.new("^/users$"), UsersController, :index
+  get Regexp.new("^/users/(?<user_id>\\d+)/posts$"), PostsController, :index
 end
 
 app = Proc.new do |env|
