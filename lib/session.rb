@@ -24,8 +24,6 @@ class Session
     @cookie_hash[key] = val
   end
 
-  # serialize the hash into json and save in a cookie
-  # add to the responses cookies
   def store_session(res)
     @cookie_hash[:path] = "/"
     cookie_hash = @cookie_hash.to_json
